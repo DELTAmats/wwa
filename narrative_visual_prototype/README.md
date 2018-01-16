@@ -5,6 +5,6 @@ How they look
 In what way we can go forward into styling them, so that politicians are interested
 
 Functionality:
-Loads JSON
-builds chapter links
+Loads JSON,
+builds chapter links,
 prints chapter title, images, text
