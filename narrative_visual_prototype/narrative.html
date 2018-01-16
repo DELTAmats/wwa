@@ -1,0 +1,169 @@
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title>Visual_narrative_prototype</title>
+
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<meta charset="utf-8">
+
+		<style type="text/css">
+
+		@font-face {
+		    font-family: Bitter;
+		    src: url("font/Bitter-Regular.otf") format("opentype");
+		}
+
+		@font-face {
+		    font-family: Bitter;
+		    font-weight: bold;
+		    src: url("font/Bitter-Bold.otf") format("opentype");
+		}
+
+		@font-face {
+		    font-family: Bitter;
+		    font-weight: italic;
+		    src: url("font/Bitter-Italic.otf") format("opentype");
+		}
+
+		body
+		{
+			 font-family: Bitter, Times, serif;
+			 line-height: 150%;
+			 width:50%;
+			 padding: 0 25%;
+		}
+
+		h2
+		{
+			letter-spacing: 1px;
+		}
+
+		p
+		{
+			font-size: 11pt;
+		}
+
+		a:hover
+		{
+			color:blue;
+			cursor:pointer;
+		}
+
+		img
+		{
+			border: 1px solid darkgrey;
+		}
+
+		</style>
+
+		<script>
+			 function loadJSON(url, callback) {   
+
+		    var xobj = new XMLHttpRequest();
+		        xobj.overrideMimeType("application/json");
+		    xobj.open('GET', url, true); // Replace 'my_data' with the path to your file
+		    xobj.onreadystatechange = function () {
+		          if (xobj.readyState == 4 && xobj.status == "200") {
+		            // Required use of an anonymous callback as .open will NOT return a value but simply returns undefined in asynchronous mode
+		            callback(xobj.responseText);
+		          }
+		    };
+		    xobj.send(null);  
+		 }
+
+		 function addImage(src)
+		 {
+		 	var maxWidth= window.innerWidth/2;
+			var image = document.createElement("img");
+			image.src = "media/"+src;
+
+			//console.log(image.src);
+			image.style["max-width"] = maxWidth;
+			document.body.append(image);
+		 }
+
+		function printChapter(JSON, activeChapter)
+		{
+			var paragraph = document.createElement("p");
+			paragraph.append(JSON[0].metadata.book + "- " + activeChapter);
+			document.body.append(paragraph);
+			for (index in JSON)
+			{
+
+				if (JSON[index].ChapterMetadata.chapter == activeChapter)
+				{
+					var heading = document.createElement("h2");
+					heading.append(JSON[index].title);
+					document.body.append(heading);
+
+					//add media
+					if(JSON[index].medialink)
+					{
+						var urlArr = JSON[index].medialink.split(",");
+						if(urlArr.length > 0)
+						{
+							for (img in urlArr)
+							{
+								addImage(urlArr[img]);
+							}
+						}
+						else
+						{
+							addImage(JSON[index].medialink);
+						}
+
+					}
+					
+					var paragraph = document.createElement("p");
+					paragraph.append(JSON[index].text);
+					document.body.append(paragraph);
+
+				}
+			}
+		}
+
+		function printChapterLinks(JSONobj, chapters, activeChapter)
+		{
+			for (index in chapters)
+			{
+				var link = document.createElement("a");
+				link.append(index);
+				link.onclick = function(e)
+				{
+					document.body.innerHTML = "";
+					printChapter(JSONobj, e.target.innerText);
+					printChapterLinks(JSONobj, chapters, e.target.innerText);
+				}
+				document.body.append(link);
+				document.body.append(document.createElement("br"));
+			}
+		}
+
+		function parseBook(JSONstring)
+		{
+			var JSONobj = JSON.parse(JSONstring);
+			console.log(JSONobj[0]);
+			var chapters = {};
+
+			for (index in JSONobj)
+			{
+				if (!chapters[JSONobj[index].ChapterMetadata.chapter])
+				{
+					chapters[JSONobj[index].ChapterMetadata.chapter] = true;
+				}
+			}
+
+			var activeChapter = JSONobj[0].ChapterMetadata.chapter;
+			printChapter(JSONobj, activeChapter);
+			printChapterLinks(JSONobj, chapters, activeChapter)
+		}
+
+		 loadJSON("wwa_nbs.json", parseBook);
+		</script>
+	</head>
+	<body>
+
+	</body>
+</html>
