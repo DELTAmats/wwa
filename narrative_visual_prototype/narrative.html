@@ -1,6 +1,4 @@
-<html>
-
-	<head>
+<head>
 		<meta charset="UTF-8">
 		<title>Visual_narrative_prototype</title>
 
@@ -8,162 +6,73 @@
 		<meta http-equiv="X-UA-Compatible" content="IE=edge">
 		<meta charset="utf-8">
 
-		<style type="text/css">
+    <link href="https://unpkg.com/vuetify/dist/vuetify.min.css" rel="stylesheet">
+		<--! link rel="stylesheet" href="css/page_style.css" -->
 
-		@font-face {
-		    font-family: Bitter;
-		    src: url("font/Bitter-Regular.otf") format("opentype");
-		}
+    <script src="https://unpkg.com/vuetify/dist/vuetify.js"></script>
+</head>
+<body class ="elevation-0">
+  <div class ="overlay elevation-1">
+    <h1 class="bookTitle text-xs-center"> Coastal Safety </h1>
+    <h2 class="chapterTitle text-xs-center themeTooMuch"> Problem </h2>
+    <div class="page elevation-2">
+    	<h3 class="pageTitle text-xs-center">Sea level rise & more extreme weather are predicted and observed</h3>
+      <div class="pageText">
+        <p>
+         Coastal systems are increasingly vulnerable to flooding due to the combined influence of coastal storms, development and population growth, geomorphic change, and sea level rise.
+        </p>
+      </div>
+    	<div class="pageMedia">
+    	 <img src="media/worldmap.png">
+    	</div>
+    </div>
 
-		@font-face {
-		    font-family: Bitter;
-		    font-weight: bold;
-		    src: url("font/Bitter-Bold.otf") format("opentype");
-		}
 
-		@font-face {
-		    font-family: Bitter;
-		    font-weight: italic;
-		    src: url("font/Bitter-Italic.otf") format("opentype");
-		}
+    <div class="page elevation-2">
+      <h3 class="pageTitle text-xs-center">CO2 production is too high Population density is increasing</h3>
+      <div class="pageText">
+        <p>
+         CO2 production is too high. Population density is increasing. Vulnerable areas are increasingly developed.
+        </p>
+      </div>
+      <div class="pageMedia">
+      </div>
+    </div>
 
-		body
-		{
-			 font-family: Bitter, Times, serif;
-			 line-height: 150%;
-			 width:50%;
-			 padding: 0 25%;
-		}
 
-		h2
-		{
-			letter-spacing: 1px;
-		}
+    <div class="page elevation-2">
+      <h3 class="pageTitle text-xs-center">Economic growth in present carbon based approach is unsustainable</h3>
+      <div class="pageText">
+        <p>
+         Economic growth in present carbon based approach is unsustainable
+        </p>
+      </div>
+      <div class="pageMedia">
+      </div>
+    </div>
 
-		p
-		{
-			font-size: 11pt;
-		}
+  </div>
 
-		a:hover
-		{
-			color:blue;
-			cursor:pointer;
-		}
+    <template id="pagetemplate">
+      <v-layout>
+        <v-flex xs12 sm6 offset-sm3>
+          <v-card>
+            <v-card-media src="/static/doc-images/cards/desert.jpg" height="200px">
+            </v-card-media>
+            <v-card-title primary-title>
+              <div>
+                <h3 class="headline mb-0">Kangaroo Valley Safari</h3>
+                <div>Located two hours south of Sydney in the <br>Southern Highlands of New South Wales, ...</div>
+              </div>
+            </v-card-title>
+            <v-card-actions>
+              <v-btn flat color="orange">Share</v-btn>
+              <v-btn flat color="orange">Explore</v-btn>
+            </v-card-actions>
+          </v-card>
+        </v-flex>
+      </v-layout>
+    </template>
 
-		img
-		{
-			border: 1px solid darkgrey;
-		}
 
-		</style>
-
-		<script>
-			 function loadJSON(url, callback) {   
-
-		    var xobj = new XMLHttpRequest();
-		        xobj.overrideMimeType("application/json");
-		    xobj.open('GET', url, true); // Replace 'my_data' with the path to your file
-		    xobj.onreadystatechange = function () {
-		          if (xobj.readyState == 4 && xobj.status == "200") {
-		            // Required use of an anonymous callback as .open will NOT return a value but simply returns undefined in asynchronous mode
-		            callback(xobj.responseText);
-		          }
-		    };
-		    xobj.send(null);  
-		 }
-
-		 function addImage(src)
-		 {
-		 	var maxWidth= window.innerWidth/2;
-			var image = document.createElement("img");
-			image.src = "media/"+src;
-
-			//console.log(image.src);
-			image.style["max-width"] = maxWidth;
-			document.body.append(image);
-		 }
-
-		function printChapter(JSON, activeChapter)
-		{
-			var paragraph = document.createElement("p");
-			paragraph.append(JSON[0].metadata.book + "- " + activeChapter);
-			document.body.append(paragraph);
-			for (index in JSON)
-			{
-
-				if (JSON[index].ChapterMetadata.chapter == activeChapter)
-				{
-					var heading = document.createElement("h2");
-					heading.append(JSON[index].title);
-					document.body.append(heading);
-
-					//add media
-					if(JSON[index].medialink)
-					{
-						var urlArr = JSON[index].medialink.split(",");
-						if(urlArr.length > 0)
-						{
-							for (img in urlArr)
-							{
-								addImage(urlArr[img]);
-							}
-						}
-						else
-						{
-							addImage(JSON[index].medialink);
-						}
-
-					}
-					
-					var paragraph = document.createElement("p");
-					paragraph.append(JSON[index].text);
-					document.body.append(paragraph);
-
-				}
-			}
-		}
-
-		function printChapterLinks(JSONobj, chapters, activeChapter)
-		{
-			for (index in chapters)
-			{
-				var link = document.createElement("a");
-				link.append(index);
-				link.onclick = function(e)
-				{
-					document.body.innerHTML = "";
-					printChapter(JSONobj, e.target.innerText);
-					printChapterLinks(JSONobj, chapters, e.target.innerText);
-				}
-				document.body.append(link);
-				document.body.append(document.createElement("br"));
-			}
-		}
-
-		function parseBook(JSONstring)
-		{
-			var JSONobj = JSON.parse(JSONstring);
-			console.log(JSONobj[0]);
-			var chapters = {};
-
-			for (index in JSONobj)
-			{
-				if (!chapters[JSONobj[index].ChapterMetadata.chapter])
-				{
-					chapters[JSONobj[index].ChapterMetadata.chapter] = true;
-				}
-			}
-
-			var activeChapter = JSONobj[0].ChapterMetadata.chapter;
-			printChapter(JSONobj, activeChapter);
-			printChapterLinks(JSONobj, chapters, activeChapter)
-		}
-
-		 loadJSON("wwa_nbs.json", parseBook);
-		</script>
-	</head>
-	<body>
-
-	</body>
-</html>
+</body>

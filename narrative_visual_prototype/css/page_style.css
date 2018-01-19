@@ -1,0 +1,122 @@
+@font-face
+{
+    font-family: Bitter;
+    src: url("../font/Bitter-Regular.otf") format("opentype");
+}
+
+@font-face
+{
+    font-family: Bitter;
+    font-weight: bold;
+    src: url("../font/Bitter-Bold.otf") format("opentype");
+}
+
+@font-face
+{
+    font-family: Bitter;
+    font-weight: italic;
+    src: url("../font/Bitter-Italic.otf") format("opentype");
+}
+
+body
+{
+    overflow: hidden;
+    font-family: Bitter, Times, serif;
+    line-height: 150%;
+    background: #09273e url(../wwa-placeholder-screenshot.png) no-repeat top center;
+    background-size:auto 480px;
+    box-sizing: border-box;
+    min-width:400px;
+}
+
+.overlay
+{
+  position: fixed;
+  overflow-y: scroll;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+ }
+
+.page
+{
+  min-width:320px;
+  max-width:800px;
+  width:75%;
+  margin:48px auto 12px auto;
+  background-color:#efefef;
+  padding:24px;
+  min-height: 480px;
+}
+
+.textCenter
+{
+  width:100%;
+  text-align:center;
+}
+
+.bookTitle
+{
+	letter-spacing: 1px;
+  font-size: 46pt;
+  line-height: 50pt;
+  color:#efefef;
+  margin: 480px auto 12px auto;
+  text-shadow: 0px 2px 12px rgba(50, 50, 50, 1);
+}
+
+.chapterTitle
+{
+  letter-spacing: 1px;
+  font-size: 32pt;
+  line-height: 34pt;
+  color:#efefef;
+  margin: 64px auto 12px auto;
+  text-shadow: 0px 2px 12px rgba(50, 50, 50, 1);
+}
+
+.pageTitle
+{
+  letter-spacing: 1px;
+  font-size: 14pt;
+  line-height: 16pt;
+  margin: 2px auto;
+}
+
+
+.themeTooMuch
+{
+  color:#2e4e9b;
+}
+
+.themeTooLittle
+{
+  color:#c6b480;
+}
+
+.themeTooDirty
+{
+  color:#565e21;
+}
+
+.pageText
+{
+  width:100%;
+}
+
+p
+{
+	font-size: 11pt;
+}
+
+.pageMedia
+{
+  width:100%;
+}
+
+img
+{
+	border: 1px solid darkgrey;
+  width:100%;
+}
